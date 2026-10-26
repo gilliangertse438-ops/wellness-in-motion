@@ -109,7 +109,8 @@ h2.howto { margin: 8px 0 0; font-size: 14.5px; font-weight: 500; letter-spacing:
 .logo { position: relative; width: 800px; height: 800px; background: #7A8062; color: #F6F1E8; font-family: 'Jost', sans-serif; overflow: hidden; }
 .logo svg.frame { position: absolute; inset: 0; }
 .logo .stack { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.logo .macron { width: 28px; height: 3px; background: #E2CFAE; margin-left: 6px; margin-bottom: 6px; transform-origin: left center; }
+.logo .i { position: relative; display: inline-block; letter-spacing: 0; margin-right: .06em; }
+.logo .macron { position: absolute; left: calc(50% - 14px); top: 0.005em; width: 28px; height: 3px; background: #E2CFAE; transform-origin: left center; }
 .logo .wim { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 168px; line-height: .82; letter-spacing: .06em; padding-left: .06em; }
 .logo .word { margin-top: 38px; font-weight: 300; font-size: 26px; letter-spacing: .42em; padding-left: .42em; }
 .logo .divider { margin-top: 28px; display: flex; align-items: center; gap: 16px; }
@@ -574,7 +575,7 @@ var REST = [
 var QUOTE = 'Our miracle lies in serving others, our strength lies in growing together, and our joy lies in the journey.';
 
 
-var LOGO = "<div class=\"logo {v}\" aria-label=\"Wellness In Motion logo\" role=\"img\">\n<svg class=\"frame\" width=\"800\" height=\"800\" viewBox=\"0 0 800 800\" fill=\"none\" aria-hidden=\"true\">\n<path class=\"outer\" d=\"M400 45.5H754.5V754.5H45.5V45.5H400\" stroke=\"#E2CFAE\" stroke-width=\"3\"/>\n<path class=\"inner\" d=\"M400 57.5H742.5V742.5H57.5V57.5H400\" stroke=\"#E2CFAE\" stroke-width=\"1\"/>\n</svg>\n<div class=\"stack\">\n<div class=\"macron\"></div>\n<div class=\"wim\">WIM</div>\n<div class=\"word\">WELLNESS IN MOTION</div>\n<div class=\"divider\"><div class=\"ln l\"></div><svg class=\"heart\" width=\"24\" height=\"22\" viewBox=\"0 0 26 24\" fill=\"none\" stroke=\"#E2CFAE\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 21.5C9 18 2.5 13.6 2.5 7.8 2.5 4.6 5 2.4 7.8 2.4c2.3 0 4 1.3 5.2 3.3 1.2-2 2.9-3.3 5.2-3.3 2.8 0 5.3 2.2 5.3 5.4 0 5.8-6.5 10.2-10.5 13.7z\"/></svg><div class=\"ln r\"></div></div>\n<div class=\"tag\">GOOD ENERGY \u00b7 STRONG WOMEN \u00b7 REAL LIFE</div>\n</div></div>";
+var LOGO = "<div class=\"logo {v}\" aria-label=\"Wellness In Motion logo\" role=\"img\">\n<svg class=\"frame\" width=\"800\" height=\"800\" viewBox=\"0 0 800 800\" fill=\"none\" aria-hidden=\"true\">\n<path class=\"outer\" d=\"M400 45.5H754.5V754.5H45.5V45.5H400\" stroke=\"#E2CFAE\" stroke-width=\"3\"/>\n<path class=\"inner\" d=\"M400 57.5H742.5V742.5H57.5V57.5H400\" stroke=\"#E2CFAE\" stroke-width=\"1\"/>\n</svg>\n<div class=\"stack\">\n<div class=\"wim\">W<span class=\"i\">I<span class=\"macron\"></span></span>M</div>\n<div class=\"word\">WELLNESS IN MOTION</div>\n<div class=\"divider\"><div class=\"ln l\"></div><svg class=\"heart\" width=\"24\" height=\"22\" viewBox=\"0 0 26 24\" fill=\"none\" stroke=\"#E2CFAE\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 21.5C9 18 2.5 13.6 2.5 7.8 2.5 4.6 5 2.4 7.8 2.4c2.3 0 4 1.3 5.2 3.3 1.2-2 2.9-3.3 5.2-3.3 2.8 0 5.3 2.2 5.3 5.4 0 5.8-6.5 10.2-10.5 13.7z\"/></svg><div class=\"ln r\"></div></div>\n<div class=\"tag\">GOOD ENERGY \u00b7 STRONG WOMEN \u00b7 REAL LIFE</div>\n</div></div>";
 var LEAF = '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14z"/><path d="M5 19c3-4 6-7 10-10"/></svg>';
 var HEART = '<svg width="14" height="13" viewBox="0 0 26 24" fill="none" stroke="#E2CFAE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21.5C9 18 2.5 13.6 2.5 7.8 2.5 4.6 5 2.4 7.8 2.4c2.3 0 4 1.3 5.2 3.3 1.2-2 2.9-3.3 5.2-3.3 2.8 0 5.3 2.2 5.3 5.4 0 5.8-6.5 10.2-10.5 13.7z"/></svg>';
 var CHEV_R = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
@@ -693,7 +694,24 @@ function render() {
   drawPlaying();
   fitLogo();
 }
-function fitLogo() { var st = app.querySelector('.logostage'); if (st) st.firstElementChild.style.transform = 'scale(' + (st.clientWidth / 800) + ')'; }
+function alignMacron(root) {
+  (root || document).querySelectorAll('.logo .i').forEach(function (sp) {
+    var m = sp.querySelector('.macron'); if (!m) return;
+    try {
+      var cs = getComputedStyle(sp), fs = parseFloat(cs.fontSize), pad = Math.round(fs * 0.2);
+      var cv = document.createElement('canvas'); cv.width = Math.ceil(fs * 1.2); cv.height = Math.ceil(fs * 1.1);
+      var c = cv.getContext('2d');
+      c.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+      c.fillStyle = '#000'; c.textBaseline = 'alphabetic'; c.fillText('I', pad, Math.round(fs * 0.95));
+      var y0 = Math.round(fs * 0.55), y1 = Math.round(fs * 0.8), d = c.getImageData(0, y0, cv.width, y1 - y0).data, sum = 0, n = 0;
+      for (var y = 0; y < y1 - y0; y++) for (var x = 0; x < cv.width; x++) { var a = d[(y * cv.width + x) * 4 + 3]; if (a > 0) { sum += (x + 0.5) * a; n += a; } }
+      if (!n) return;
+      var center = sum / n - pad;
+      m.style.left = (center - m.offsetWidth / 2 - fs * 0.015) + 'px';
+    } catch (e) {}
+  });
+}
+function fitLogo() { alignMacron(app);  var st = app.querySelector('.logostage'); if (st) st.firstElementChild.style.transform = 'scale(' + (st.clientWidth / 800) + ')'; }
 addEventListener('resize', fitLogo);
 
 var t0 = performance.now(), reduced = false;
@@ -745,6 +763,7 @@ app.addEventListener('click', function (e) {
 });
 
 render();
+if (document.fonts) document.fonts.ready.then(fitLogo);
 </script>
 
 </body>
